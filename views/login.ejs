@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Login Page</title>
+</head>
+<style>
+*{
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+
+}
+body{
+    background-color: #d6e0f0;
+}
+.hero{
+    height:100%;
+    width:100%;
+}
+.form-box{
+    width:500px;
+    height:600px;
+    position:relative;
+    margin:6% auto;
+    background:#fff;
+    padding:5px;
+    overflow: hidden;
+    border-radius: 20px;;
+}
+.button-box{
+    width:225px;
+    margin: 35px auto;
+    position: relative;
+    box-shadow: 0 0 20px 9px #d6e0f0;
+    border-radius: 30px;
+}
+.toggle-btn{
+    padding:10px 30px;
+    cursor:pointer;
+    background:transparent;
+    border:0;
+    outline:none;
+    position:relative;
+    font-size:1rem;
+
+}
+#btn{
+    top:0;
+    left:0;
+    position: absolute;
+    width:110px;
+    height:100%;
+    background:#251f44;
+    border-radius:30px;
+    transition:.5s;
+    color:white;
+}
+.input-group{
+    top:180px;
+    position:absolute;
+    width:280px;
+    transition:.5s
+}
+.inputField{
+    width: 100%;
+    padding:20px 0px;
+    font-size:1.2rem;
+    margin: 5px 0;
+    border-left:0;
+    border-top:0;
+    border-right:0;
+    border-bottom:1px solid #999;
+    outline:none;
+    background:ransparent;
+}
+.submit-btn{
+    width:85%;
+    padding:10px 30px;
+    cursor:pointer;
+    display:block;
+    margin:auto;
+    margin-top:20px;
+    background:#251f44;
+    border:0;
+    outline:none;
+    border-radius:30px;
+    font-size:1.2rem;
+    color:white;
+
+}
+#login{
+    left:110px;
+}
+#register{
+    left:520px;
+
+}
+#togLog{
+    color:white
+}
+</style>
+<body>
+    <div class="hero">
+        <div class="form-box">
+        <div class="button-box">
+            <div id="btn"></div>
+            <button type="button" class="toggle-btn" id='togLog' onclick="login()">LogIn</button>
+            <button type="button" class="toggle-btn" id='togReg' onclick="register()">Register</button>
+        </div>
+        <form action="/login" method="POST" id="login" class="input-group">
+            <input type="text" class="inputField" placeholder="Username" name='username' required>
+            <input type="password" class="inputField" placeholder="Password" name='password' required>
+            <button type='submit' class="submit-btn">Log In</button>
+        </form>
+        <form action="/register" method="POST" id="register" class="input-group">
+            <input type="text" class="inputField" placeholder="Username" name='username' required>
+            <input type="email" class="inputField" placeholder="Email" name='email' required>
+            <input type="password" class="inputField" placeholder="Password" name='password' required>
+            <select name="type" id="" class="inputField">
+                <option value="seller">Seller</option>
+                <option value="buyer">Buyer</option>
+
+            </select>
+            <button type='submit' class="submit-btn">Register</button>
+        </form>
+    </div>
+    </div>
+</body>
+<script>
+    logIn=document.getElementById('login');
+    reg=document.getElementById('register');
+    button=document.getElementById('btn');
+    function register(){
+        logIn.style.left="-400px";
+        reg.style.left="110px";
+        button.style.left="115px";
+        document.getElementById('togLog').style.color='black';
+        document.getElementById('togReg').style.color='white';
+
+    }
+    function login(){
+        logIn.style.left="110px";
+        reg.style.left="520px";
+        button.style.left="0";
+        document.getElementById('togLog').style.color='white';
+        document.getElementById('togReg').style.color='black';
+    }
+
+</script>
+</html>

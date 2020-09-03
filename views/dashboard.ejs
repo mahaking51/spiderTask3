@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+        <title>Userpage</title>
+        <link rel="stylesheet" type='text/css' href="/css/styleDash.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+    </head>
+    
+	<body>
+
+		<!--wrap start-->
+		<div class="wrap">
+			<!--header menu start-->
+			<div class="header">
+				<div class="header-menu">
+					<div class="title">XYZ</div>
+					<div class="sidebar-btn">
+						<i class="fas fa-bars"></i>
+					</div>
+					<ul>
+						<li><a href="#"><i class="fas fa-search"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<!--header menu end-->
+			<!--sidebar start-->
+			<div class="sidebar">
+				<div class="sidebar-menu">
+					<center class="profile">
+						<img src="1.jpg" alt="">
+						<p id='name'><%=name%></p>
+					</center>
+					<li class="item">
+						<a href="#" class="menu-btn" id="dashboard">
+							<i class="fas fa-desktop"></i><span>Dashboard</span>
+						</a>
+					</li>
+					<li class="item" >
+						<a href="#profile" class="menu-btn" id="profile">
+							<i class="fas fa-user-circle"></i><span>Profile </span>
+						</a>
+					</li>
+					<li class="item" >
+						<a href="#messages" class="menu-btn" id='messages'>
+                            <div id='buyer'>
+                                <i class="fas fa-shopping-cart"></i><span>Cart</span>
+                            </div>
+                            <div id='seller'>
+                                <i class="fas fa-dollar-sign"></i><span>Sell</span>
+                            </div>
+
+						</a>
+						<div class="sub-menu" id='msgSub'>
+							<a href="#"><i class="fas fa-envelope"></i><span>New</span></a>
+							<a href="#"><i class="fas fa-envelope-square"></i><span>Sent</span></a>
+							<a href="#"><i class="fas fa-exclamation-circle"></i><span>Spam</span></a>
+						</div>
+					</li>
+					<li class="item" >
+						<a href="#settings" class="menu-btn" id="settings">
+							<i class="fas fa-cog"></i><span>Settings </span>
+						</a>
+						<div class="sub-menu">
+							<a href="#"><i class="fas fa-lock"></i><span>Password</span></a>
+							<a href="#"><i class="fas fa-language"></i><span>Language</span></a>
+						</div>
+					</li>
+					<li class="item">
+						<a href="/logout" class="menu-btn" id="about">
+							<i class="fas fa-info-circle"></i><span>Logout</span>
+						</a>
+					</li>
+				</div>
+			</div>
+			<!--sidebar end-->
+			<!--main container start-->
+			<div class="main-container">
+				<div id='dashboardSec' >
+					<div class="card">
+						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+					<div class="card">
+						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+					<div class="card">
+						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+				</div>
+				<div id='msgSec' style="display: none;">
+					<div class="card">
+						<p>Lorem Ipsum is simply messages text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+				</div>
+				<div id='settingsSec' style="display: none;">
+					<div class="card">
+						<p>Lorem Ipsum is simply settings text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+				</div>
+				<div id='aboutSec' style="display: none;">
+					<div class="card">
+						<p>Lorem Ipsum is simply about text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					</div>
+				</div>
+			</div>
+			<!--main container end-->
+		</div>
+		<!--wrap end-->
+        <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+    userName=document.getElementById('name').innerHTML;
+    $(document).ready(()=>{
+    $.ajax({
+        url:'/users/'+userName,
+        type:'GET',
+        dataType:'json',
+        success:(data)=>{
+            console.log(data);
+            if(data.type==='buyer'){
+                document.getElementById('seller').style.display='none'
+
+            }
+            else{
+                document.getElementById('buyer').style.display='none'
+
+            }
+        }
+    })
+});
+		$(document).ready(function(){
+			$(".sidebar-btn").click(function(){
+				$(".wrap").toggleClass("collapse");
+			});
+		});
+		document.getElementById('dashboard').addEventListener('click',function(){
+			document.getElementById('dashboardSec').style.display='block';
+			document.getElementById('aboutSec').style.display='none';
+			document.getElementById('msgSec').style.display='none';
+			document.getElementById('settingsSec').style.display='none';
+
+		})
+		document.getElementById('messages').addEventListener('click',function(){
+			document.getElementById('msgSec').style.display='block';
+			document.getElementById('aboutSec').style.display='none';
+			document.getElementById('settingsSec').style.display='none';
+			document.getElementById('dashboardSec').style.display='none';
+
+		})
+		document.getElementById('settings').addEventListener('click',function(){
+			document.getElementById('settingsSec').style.display='block';
+			document.getElementById('aboutSec').style.display='none';
+			document.getElementById('msgSec').style.display='none';
+			document.getElementById('dashboardSec').style.display='none';
+
+		})
+		document.getElementById('about').addEventListener('click',function(){
+			document.getElementById('aboutSec').style.display='block';
+			document.getElementById('msgSec').style.display='none';
+			document.getElementById('settingsSec').style.display='none';
+			document.getElementById('dashboardSec').style.display='none';
+
+		})
+		</script>
+
+	</body>
+</html>

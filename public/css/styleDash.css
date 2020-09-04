@@ -4,8 +4,8 @@
     list-style: none;
     text-decoration: none;
     box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
-  }
+    /* font-family: 'Work Sans', sans-serif; */
+    }
   html {
     font-family: sans-serif;
     line-height: 1.15;
@@ -34,6 +34,7 @@
   div{
     transition:0.6s;
   }
+  
   .wrap .header{
     z-index: 1;
     background: #22242A;
@@ -145,6 +146,7 @@
     padding: 25px 20px;
     transition: 0.3s;
     transition-property: color;
+    text-decoration:none;
   }
   
   .wrap .sidebar .sidebar-menu .item .menu-btn:hover{
@@ -206,27 +208,27 @@
     transition: 0.3s;
   }
   
-  .wrap.collapse .sidebar{
+  .wrap.coll .sidebar{
     width: 70px;
     height: 100%;
   }
   
-  .wrap.collapse .sidebar .profile img,
-  .wrap.collapse .sidebar .profile p,
-  .wrap.collapse .sidebar a span{
+  .wrap.coll .sidebar .profile img,
+  .wrap.coll .sidebar .profile p,
+  .wrap.coll .sidebar a span{
     display: none;
   }
   
-  .wrap.collapse .sidebar .sidebar-menu .item .menu-btn{
+  .wrap.coll .sidebar .sidebar-menu .item .menu-btn{
     font-size: 23px;
   }
   
-  .wrap.collapse .sidebar .sidebar-menu .item .sub-menu i{
+  .wrap.coll .sidebar .sidebar-menu .item .sub-menu i{
     font-size: 18px;
     padding-left: 3px;
   }
   
-  .wrap.collapse .main-container{
+  .wrap.coll .main-container{
     width: calc(100% - 70px);
     margin-left: 70px;
   }
@@ -242,4 +244,12 @@
   }
   .sidebar{
     background-color: #dddddd;
+  }
+  #sellSec{
+    font-family: 'PT Sans', sans-serif;
+    width:75%;
+  }
+  a{
+    color: inherit; 
+  text-decoration: inherit
   }

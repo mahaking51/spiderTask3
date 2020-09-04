@@ -5,9 +5,13 @@
         <title>Userpage</title>
         <link rel="stylesheet" type='text/css' href="/css/styleDash.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
-
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     </head>
     
 	<body>
@@ -78,21 +82,79 @@
 			</div>
 			<!--sidebar end-->
 			<!--main container start-->
-			<div class="main-container">
-				<div id='dashboardSec' >
-					<div class="card">
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-					</div>
-					<div class="card">
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-					</div>
-					<div class="card">
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-					</div>
+			<div class="main-container" style="background-color: #f1f3f8;">
+				<div id='dashboardSec'>
+				<div id='dashboardSellSec' >
+					
 				</div>
-				<div id='msgSec' style="display: none;">
-					<div class="card">
-						<p>Lorem Ipsum is simply messages text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+				<div id='dashboardBuySec'>
+
+				</div>
+			</div>
+                <div id='msgSec' style="display: none;">
+                <!-- selling section -->
+                <div id='sellSec' class="container" style="display: none;">
+                    <img src="/src/sell.png" alt="" height="200px" width='200px' style="display:block;margin-left:auto;margin-right:auto">
+                    <h1 style="text-align: center; margin-bottom:2.5rem;">Sell Your Products</h1>
+                    <h4>Enter the Products details:</h4>
+                    <form>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Name of the product</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inputName" placeholder="Name" required>
+                            </div>
+                          </div>
+                        <div class="form-group row">
+                          <label for="inputPassword" class="col-sm-2 col-form-label">Quantity</label>
+                          <div class="col-sm-10">
+                            <input type="number" class="form-control" id="inputQuant" placeholder="Quantity" required>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Price of each product</label>
+                            <div class="col-sm-10">
+                              <input type="number" class="form-control" id="inputPrice" placeholder="Price" required>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="inputDesc" rows="3" placeholder="Description" required></textarea>
+                            </div>
+                          </div>
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Submit</button>    
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  Are you sure you want to post the product,You will ont be able to change the price of the product again.
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <button type="button" id="addProduct" class="btn btn-success">Submit</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>                      
+                        </form>
+					</div>
+					<div id='buyCart' class="container" style="display: none;">
+						<div class='container'>
+							<img src="/src/cart.png" alt="" height="250px" width='250px'>
+							<h2 style="text-align: center;">Items in Your Cart :</h2>
+							<div class="container" id='myCart'>
+								<ul class="list-group" id='myCartItems'>
+
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id='settingsSec' style="display: none;">
@@ -110,6 +172,7 @@
 		</div>
 		<!--wrap end-->
         <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+        <script src = "/socket.io/socket.io.js"></script>
     <script type="text/javascript">
     userName=document.getElementById('name').innerHTML;
     $(document).ready(()=>{
@@ -120,11 +183,18 @@
         success:(data)=>{
             console.log(data);
             if(data.type==='buyer'){
-                document.getElementById('seller').style.display='none'
-
+				document.getElementById('seller').style.display='none'
+				document.getElementById('dashboardSellSec').style.display='none';
+				document.getElementById('buyCart').style.display='block'
+				socket.emit('cartUpdate',userName);
+				socket.on('itemUpdate',function(data){
+					document.getElementById('buyer').innerHTML+='<span class="badge badge-light" id="cartItems" style="margin-top:3px;padding:5px;margin-left:6px;">'+data+'</span>'
+				})
             }
             else{
                 document.getElementById('buyer').style.display='none'
+                document.getElementById('sellSec').style.display='block'
+				document.getElementById('dashboardBuySec').style.display='none'
 
             }
         }
@@ -132,7 +202,7 @@
 });
 		$(document).ready(function(){
 			$(".sidebar-btn").click(function(){
-				$(".wrap").toggleClass("collapse");
+				$(".wrap").toggleClass("coll");
 			});
 		});
 		document.getElementById('dashboard').addEventListener('click',function(){
@@ -143,6 +213,7 @@
 
 		})
 		document.getElementById('messages').addEventListener('click',function(){
+			
 			document.getElementById('msgSec').style.display='block';
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('settingsSec').style.display='none';
@@ -164,6 +235,7 @@
 
 		})
 		</script>
-
+		<script src="/js/buyer.js"></script>
+		<script src="/js/user.js"></script>
 	</body>
 </html>

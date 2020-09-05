@@ -37,6 +37,7 @@ const userSchema=new mongoose.Schema({
     address:String,
     type:String,
     email:String,
+    address:String
 })
 const productSchema=new mongoose.Schema({
     name:String,
@@ -72,8 +73,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.get('/',function(req,res){
-        res.render('login');
+        res.render('login',{cond:true});
         const url='https://pixabay.com/api/?key=18163249-030c794f94b190a9cfe26d956&q=yellow+flowers&image_type=photo&per_page=3&pretty=false';
+})
+app.get('/login/fail',function(req,res){
+    res.render('login',{cond:false})
 })
 app.get('/users/:name',function(req,res){
 User.findOne({username:req.params.name},function(err,obj){
@@ -95,9 +99,14 @@ app.get('/cart/:name',function(req,res){
         res.send(arr);
     })
 })
-app.get('/register',function(req,res){
-    res.render('register');
+app.get('/detailsUser',function(req,res){
+    User.find({},function(err,arr){
+        res.send(arr);
+    })
 })
+// app.get('/register',function(req,res){
+//     res.render('register');
+// })
 app.get('/dashboard/:name',async function(req,res){
     src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=128&background=f6f5f5&color=393b44"
     if(req.isAuthenticated()){
@@ -114,7 +123,7 @@ app.get('/logout',function(req,res){
 })
 app.post('/register',function(req,res){
     
-    User.register({username:req.body.username,type:req.body.type,email:req.body.email, active: false}, req.body.password, function(err, user) {
+    User.register({username:req.body.username,type:req.body.type,email:req.body.email,address:req.body.address, active: false}, req.body.password, function(err, user) {
         if (err) { 
             console.log(err);
             res.redirect('/')
@@ -137,7 +146,7 @@ app.post('/login',function(req,res){
             console.log(err);
         }
         else{
-            passport.authenticate("local")(req,res,function(){
+            passport.authenticate("local" , { failureRedirect: '/login/fail' })(req,res,function(){
                 res.redirect('/dashboard/'+req.body.username);
             })
         }
@@ -230,7 +239,14 @@ io.on('connection', function(socket) {
 
         })
     })
-
+    socket.on('updateValues',function(data){
+        console.log(data);
+        Product.updateOne({_id:data.pid},{$set:{quantity:data.quant,price:data.price,desc:data.desc}},function(err,succ){
+            if(err){
+                console.log(err);
+            }
+        })
+    })
 })
 http.listen(3000, function() {
     console.log('listening on *:3000');

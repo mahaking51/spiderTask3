@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <title>Login Page</title>
 </head>
 <style>
@@ -16,13 +20,16 @@
 body{
     background-color: #d6e0f0;
 }
+button{
+    outline:none;
+}
 .hero{
     height:100%;
     width:100%;
 }
 .form-box{
     width:500px;
-    height:600px;
+    height:650px;
     position:relative;
     margin:6% auto;
     background:#fff;
@@ -96,10 +103,13 @@ body{
 }
 #register{
     left:520px;
-
 }
 #togLog{
     color:white
+}
+#submitbut:disabled{
+    background-color:#776d8a;
+    color:#ececec
 }
 </style>
 <body>
@@ -107,29 +117,179 @@ body{
         <div class="form-box">
         <div class="button-box">
             <div id="btn"></div>
-            <button type="button" class="toggle-btn" id='togLog' onclick="login()">LogIn</button>
-            <button type="button" class="toggle-btn" id='togReg' onclick="register()">Register</button>
+            <button type="button" class="toggle-btn" id='togLog' onclick="login()" style="outline: none;">LogIn</button>
+            <button type="button" class="toggle-btn" id='togReg' onclick="register()" style="outline: none;">Register</button>
         </div>
         <form action="/login" method="POST" id="login" class="input-group">
-            <input type="text" class="inputField" placeholder="Username" name='username' required>
-            <input type="password" class="inputField" placeholder="Password" name='password' required>
-            <button type='submit' class="submit-btn">Log In</button>
+            <input type="text" class="inputField" placeholder="Username" name='username' required autocomplete="off">
+            <input type="password" class="inputField" placeholder="Password" name='password' required autocomplete="off">
+            <%if(!cond){%>
+                <p style="color:red; display: block; margin:auto">Invalid Credentials</p>
+            <%}%>
+            <button type='submit' class="submit-btn" style="outline: none;">Log In</button>
         </form>
-        <form action="/register" method="POST" id="register" class="input-group">
-            <input type="text" class="inputField" placeholder="Username" name='username' required>
-            <input type="email" class="inputField" placeholder="Email" name='email' required>
+        <form action="/register" method="POST" id="register" class="input-group" style="top:90px">
+            <!-- <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a> -->
+            <input id='username'  type="text" data-toggle="popover" data-container="body"   tabindex="0" class="inputField"  placeholder="Username" name='username' required autocomplete="off">
+            <input id="email" type="email" class="inputField" data-toggle="popover" data-container="body"   tabindex="0" placeholder="Email" name='email' required autocomplete="off">
             <input type="password" class="inputField" placeholder="Password" name='password' required>
+            <textarea name="address" class="inputField" id="" name="address" cols="30" rows="2" placeholder="Occupational Address"></textarea>
             <select name="type" id="" class="inputField">
                 <option value="seller">Seller</option>
                 <option value="buyer">Buyer</option>
-
             </select>
-            <button type='submit' class="submit-btn">Register</button>
+            <button type='submit' class="submit-btn" id='submitbut' style="outline: none;">Register</button>
         </form>
     </div>
     </div>
 </body>
+<!-- <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script> -->
 <script>
+function suggestUsername(fn){
+    arr=["Arrow","Assassin","Avenger",
+"Blaze",
+"Bodhi",
+"Bolt",
+"Boss",
+"Captain",
+"Crimson",
+"Cyborg",
+"Dark",
+"Death",
+"Demon",
+"Destruction",
+"Doom",
+"Doctor",
+"Dragon",
+"Enigma",
+"Fallen",
+"Fate",
+"Flame",
+"Frozen",
+"Ghost",
+"Great",
+"Infinite",
+"Immortal",
+"Killer",
+"Knight",
+"Lightning",
+"Mist",
+"Micro",
+"Neo",
+"Nightmare",
+"Ninja",
+"Outlaw",
+"Prime",
+"Realm",
+"Seeker",
+"Shadow",
+"Silver",
+"Sinister",
+"Slayer",
+"Sniper",
+"Trinity",
+"Zephyr"]
+s1=(fn+Math.round(Math.random()*1000));
+s2=(fn+arr[Math.round(Math.random()*45)]);
+if(s1.length<8){
+  s1=s1+arr[Math.round(Math.random()*45)];
+}
+if(s2.length<8){
+  s2=s2+Math.round(Math.random()*1000)+arr[Math.round(Math.random()*45)];
+}
+    return [s1,s2];
+  }   
+    const xhr =new XMLHttpRequest();
+
+    $('#username').popover({
+        trigger:'keyup',
+        title:"Username status",
+    })
+    $('#email').popover({
+        trigger:'keyup',
+        title:'Email Status',
+    })
+    $('#username').keyup(function(){
+        
+        input=($('#username').val());
+        xhr.open('GET','/detailsUser');
+        xhr.responseType='json';
+        xhr.onload=()=>{
+            var cond=false;
+            data=xhr.response
+            for(var i=0;i<data.length;i++){
+                if(input.length<8){
+                    cond=false;
+                    suggest=suggestUsername(input);
+                    $('#username').attr('data-original-title','Username is short')
+                    $('#username').attr('data-content','Username shd atleast have 8 char Some suggestions : '+suggest)
+                    $('#username').popover('show');
+                    
+                }
+                else{
+                    if(data[i].username===input){
+                    cond=false;
+                    suggest=suggestUsername(input);
+                    $('#username').attr('data-original-title','Username Already taken')
+                    $('#username').attr('data-content','Some suggestions : '+suggest)
+                    $('#username').popover('show');
+                    break;
+                }
+                else{
+                    cond=true
+                    $('#username').attr('data-original-title','Username Available')
+                    $('#username').attr('data-content','')
+                    $('#username').popover('show');
+                }
+                }
+                
+            }
+            if(!cond){
+            $('#submitbut').prop('disabled',true)
+        }
+        else{
+            $('#submitbut').prop('disabled',false)
+        }
+
+        }
+        xhr.send();
+    })
+    $('#email').keyup(function(){
+        input=$('#email').val();
+        xhr.open('GET','/detailsUser');
+        xhr.responseType='json';
+        xhr.onload=()=>{
+            data=xhr.response;
+            for(var i=0;i<data.length;i++){
+                if(!(input.includes('.') && input.includes('@'))){
+                    cond=false
+                    $('#email').attr('data-original-title','invalid Email')
+                    $('#email').popover('show');
+                }
+                else{
+                    if(data[i].email===input){
+                    cond=false
+                    $('#email').attr('data-original-title','Email Already Registered')
+                    $('#email').popover('show');
+                    break;
+                }
+                else{
+                    cond=true
+                    $('#email').attr('data-original-title','Email Vaild')
+                    $('#email').popover('show');
+                }
+                }
+            }
+            if(!cond){
+                $('#submitbut').prop('disabled',true)
+            }
+            else{
+                $('#submitbut').prop('disabled',false)
+            }
+        }
+        xhr.send()
+        
+    })
     logIn=document.getElementById('login');
     reg=document.getElementById('register');
     button=document.getElementById('btn');
@@ -148,6 +308,5 @@ body{
         document.getElementById('togLog').style.color='white';
         document.getElementById('togReg').style.color='black';
     }
-
 </script>
 </html>

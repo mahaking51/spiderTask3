@@ -13,14 +13,19 @@ $(document).ready(()=>{
 						  </div>\
 						  <div class="col-md-6">\
 							<div class="card-body">\
-							  <h3 class="card-title">'+data[i].name+'</h3>\
-							  <p class="card-text">'+data[i].desc+'</p>\
+                <h3 class="card-title">'+data[i].name+'</h3>\
+                <textarea class="form-control" id="prodDesc'+i+'" rows="3">'+data[i].desc+'</textarea>\
 							</div>\
               </div>\
-              <div class="col-md-4">\
-              <h4 class="card-text">Rs.'+data[i].price+'</h4>\
-              <h4 class="card-text">'+data[i].quantity+' items left</h4>\
+              <div class="col-md-2">\
+              <h4 class="card-text" id="prodPrice'+i+'">Rs.'+data[i].price+'</h4>\
+              <h4 class="card-text" id="prodQuant'+i+'">'+data[i].quantity+' items left</h4>\
               <h4 class="card-text">'+data[i].sold+' items sold</h4>\
+              </div>\
+              <div class="col-md-2">\
+              <input class="form-control" type="number" placeholder="New Price" style="text-align:right; margin-bottom:2px;" id="updatePrice'+i+'">\
+              <input class="form-control" type="number" placeholder="Update Quantity" style="text-align:right; margin-bottom:2px;" id="updateQuant'+i+'">\
+              <button class="btn btn-warning float-right" id="update'+i+'" value="'+data[i]._id+'">Update</button>\
               </div>\
 						</div>\
             </div>'
@@ -28,6 +33,23 @@ $(document).ready(()=>{
           }
           if(data.length==0){
             document.getElementById('dashboardSellSec').innerHTML='<h2 style="text-align:center; padding:15px;border-radius:0.25rem; color:grey; " id="noProd">Sell some products and make some money!!!</h2>'
+          }
+          for(let j=0;j<data.length;j++){
+            document.getElementById('update'+j).addEventListener('click',function(){
+              newPrice=document.getElementById('updatePrice'+j).value;
+              newQuant=document.getElementById('updateQuant'+j).value;
+              pid=document.getElementById('update'+j).value
+              desc=document.getElementById('prodDesc'+j).value;
+              if(newPrice>0 && newQuant>=1){
+                document.getElementById('prodPrice'+j).innerHTML='Rs.'+newPrice;
+                document.getElementById('prodQuant'+j).innerHTML=newQuant+' items left';
+                socket.emit('updateValues',{pid:pid,price:newPrice,quant:newQuant,desc:desc});
+                notification();
+              }
+              else{
+                alert('Recheck your values...')
+              }
+            })
           }
         }
     })
@@ -173,7 +195,7 @@ $(document).ready(()=>{
   })
 });
 //buyer cart display
-$(document).ready(()=>{
+$('#buyer').click(function(){
   document.getElementById('myCartItems').innerHTML='';
   $.ajax({
       url:'/cart/'+userName,
@@ -202,7 +224,7 @@ $(document).ready(()=>{
         }
       }
   })
-});
+})
 //checkout cart
 // socket.emit('cartNumber',userName);
 // socket.on('cartLength',function(data){

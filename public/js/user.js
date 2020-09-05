@@ -15,7 +15,6 @@ $(document).ready(()=>{
 							<div class="card-body">\
 							  <h3 class="card-title">'+data[i].name+'</h3>\
 							  <p class="card-text">'+data[i].desc+'</p>\
-							  <p class="card-text">Seller : '+data[i].seller+'</p>\
 							</div>\
               </div>\
               <div class="col-md-4">\
@@ -93,6 +92,7 @@ $(document).ready(()=>{
           }
         }
         len=data.length;
+        a=[]
         for(let j=0;j<len;j++){
           document.getElementById('buy'+j).addEventListener('click',function(e){
             e.preventDefault();
@@ -113,10 +113,62 @@ $(document).ready(()=>{
               document.getElementById('quantityLeft'+j).innerHTML=numberLeft+' items Left';
               cartQuant=parseInt(document.getElementById('cartItems').innerHTML);
               document.getElementById('cartItems').innerHTML=cartQuant+1;
-              document.getElementById('myCartItems').innerHTML+='<li class="list-group-item"><h4 style="display:inline">'+name+'</h4> - quantity : '+quantity+' <h5 style="display:inline" class="float-right">Rs.'+price*quantity+'</h5></li>'
+              document.getElementById('myCartItems').innerHTML+='<li class="list-group-item" id="itemrem'+j+'"><h4 style="display:inline">'+name+'</h4> - quantity : '+quantity+'<button class="btn btn-light float-right rem" id="rem'+j+'" style="margin-left:1rem;border-radius:50%;" value="'+id+','+price*quantity+'"><i class="fas fa-times"></i></button> <h5 style="display:inline" class="float-right">Rs.'+price*quantity+'</h5></li>'
+              condition=document.getElementById('totalCost');
+              a.push(j);
+              if(condition){
+                costDet=document.getElementById('totalCost').innerHTML;
+                  cost=parseInt(costDet.slice(8))
+                  cost=cost+price*quantity
+                  document.getElementById('totalCost').innerHTML='Total : '+cost
+              }
+              else{
+                document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+cost+'</h4>'
+              }
+            }
+            cartLength=document.getElementsByClassName('rem').length;
+            for(let l=0;l<a.length;l++){
+              document.getElementById('rem'+a[l]).addEventListener('click',function(){
+                console.log('clickedrem'+a[l]);
+                cartDetails=(document.getElementById('rem'+a[l]).value).split(',');
+                pid=cartDetails[0];
+                itemCost=parseInt(cartDetails[1])
+                socket.emit('removeItem',{pid:pid,user:userName});
+                document.getElementById('itemrem'+a[l]).style.display='none';
+                numberItems=parseInt(document.getElementById('cartItems').innerHTML);
+                numberItems--;
+                document.getElementById('cartItems').innerHTML=numberItems;
+                cond=document.getElementById('totalCost');
+                if(cond){
+                  costDet=document.getElementById('totalCost').innerHTML;
+                  cost=parseInt(costDet.slice(8))
+                  cost=cost-itemCost
+                  document.getElementById('totalCost').innerHTML='Total : '+cost
+                }
+                else{
+                  // document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+itemCost+'</h4>'
+                }
+              })
+            }
+            loadedLength=document.getElementsByClassName('remLoad').length;
+            console.log(loadedLength);
+            for(let g=0;g<loadedLength;g++){
+              document.getElementById('remove'+g).addEventListener('click',function(){
+                console.log('clicked'+g);
+                cartDetails=(document.getElementById('remove'+g).value).split(',');
+            pid=cartDetails[0]
+            cost=cost-parseInt(cartDetails[1]);
+            socket.emit('removeItem',{pid:pid,user:userName});
+            document.getElementById('item'+g).style.display='none';
+            document.getElementById('totalCost').innerHTML='Total : '+cost;
+            numberItems=parseInt(document.getElementById('cartItems').innerHTML);
+            numberItems--;
+            document.getElementById('cartItems').innerHTML=numberItems;
+              })
             }
           })
         }
+    
       }
   })
 });
@@ -128,10 +180,52 @@ $(document).ready(()=>{
       type:'GET',
       dataType:'json',
       success:(data)=>{
+        let cost=0;
         console.log(data);
         for(var k=0;k<data.length;k++){
-          document.getElementById('myCartItems').innerHTML+='<li class="list-group-item"><h4 style="display:inline">'+data[k].name+'</h4> - quantity : '+data[k].quantity+' <h5 style="display:inline" class="float-right">Rs.'+data[k].price*data[k].quantity+'</h5></li>'
+          cost=cost+data[k].price*data[k].quantity;
+          document.getElementById('myCartItems').innerHTML+='<li class="list-group-item" id="item'+k+'"><h4 style="display:inline">'+data[k].name+'</h4> - quantity : '+data[k].quantity+'<button class="btn btn-light float-right remLoad" id="remove'+k+'" style="margin-left:1rem;border-radius:50%;" value="'+data[k].pid+','+data[k].price*data[k].quantity+'"><i class="fas fa-times"></i></button>  <h5 style="display:inline" class="float-right">Rs.'+data[k].price*data[k].quantity+'</h5></li>'
+        }
+        document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+cost+'</h4>'
+        for(let i=0;i<data.length;i++){
+          document.getElementById('remove'+i).addEventListener('click',function(){
+            cartDetails=(document.getElementById('remove'+i).value).split(',');
+            pid=cartDetails[0]
+            cost=cost-parseInt(cartDetails[1]);
+            socket.emit('removeItem',{pid:pid,user:userName});
+            document.getElementById('item'+i).style.display='none';
+            document.getElementById('totalCost').innerHTML='Total : '+cost;
+            numberItems=parseInt(document.getElementById('cartItems').innerHTML);
+            numberItems--;
+            document.getElementById('cartItems').innerHTML=numberItems;
+          })
         }
       }
   })
 });
+//checkout cart
+// socket.emit('cartNumber',userName);
+// socket.on('cartLength',function(data){
+//   if(data==0){
+//     document.getElementById('checkout').disabled=true;
+//   }
+// })
+document.getElementById('checkout').addEventListener('click',function(){
+  socket.emit('cartNumber',userName);
+  socket.on('cartLength',function(data){
+    if(data==0){
+      alert('No items in cart');
+    }
+    else{
+      socket.emit('purchase',userName);
+    }
+  })
+  // console.log('checkout');
+  // number=parseInt(document.getElementById('cartItems').innerHTML);;
+  document.getElementById('cartItems').innerHTML=0;
+  document.getElementById('success').style.display='block';
+  document.getElementById('dashboardSec').style.display='none';
+  document.getElementById('msgSec').style.display='none';
+	document.getElementById('settingsSec').style.display='none';
+	document.getElementById('aboutSec').style.display='none';
+})

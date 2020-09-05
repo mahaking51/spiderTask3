@@ -35,7 +35,7 @@
 			<div class="sidebar">
 				<div class="sidebar-menu">
 					<center class="profile">
-						<img src="1.jpg" alt="">
+						<img src="<%=link%>" alt="network err">
 						<p id='name'><%=name%></p>
 					</center>
 					<li class="item">
@@ -66,7 +66,7 @@
 					</li>
 					<li class="item" >
 						<a href="#settings" class="menu-btn" id="settings">
-							<i class="fas fa-cog"></i><span>Settings </span>
+							<i class="fas fa-chart-line"></i><span>Stats </span>
 						</a>
 						<div class="sub-menu">
 							<a href="#"><i class="fas fa-lock"></i><span>Password</span></a>
@@ -75,7 +75,7 @@
 					</li>
 					<li class="item">
 						<a href="/logout" class="menu-btn" id="about">
-							<i class="fas fa-info-circle"></i><span>Logout</span>
+							<i class="fas fa-sign-out-alt"></i><span>Logout</span>
 						</a>
 					</li>
 				</div>
@@ -85,7 +85,7 @@
 			<div class="main-container" style="background-color: #f1f3f8;">
 				<div id='dashboardSec'>
 				<div id='dashboardSellSec' >
-					
+					<h3 style="">Your Products : </h3>
 				</div>
 				<div id='dashboardBuySec'>
 
@@ -147,7 +147,7 @@
 					</div>
 					<div id='buyCart' class="container" style="display: none;">
 						<div class='container'>
-							<img src="/src/cart.png" alt="" height="250px" width='250px'>
+							<img src="/src/cart.png" alt="" height="250px" width='250px' >
 							<h2 style="text-align: center;">Items in Your Cart :</h2>
 							<div class="container" id='myCart'>
 								<ul class="list-group" id='myCartItems'>
@@ -155,7 +155,13 @@
 								</ul>
 							</div>
 						</div>
+						<button class="btn btn-success" style="margin-top:5rem; margin-left:2rem" id='checkout'>CheckOut</button>
 					</div>
+				</div>
+				<div id='success' class="container" style="display: none;">
+					<img src="/src/tick.png" alt="" height="200px" width='200px' style="display:block;margin-left:auto;margin-right:auto">
+					<h1 style="text-align: center;">Purchase successful!!!</h1>
+					<h3 style="text-align: center;">Order will be delivered to your registered address</h3>
 				</div>
 				<div id='settingsSec' style="display: none;">
 					<div class="card">
@@ -206,6 +212,7 @@
 			});
 		});
 		document.getElementById('dashboard').addEventListener('click',function(){
+			window.location.reload();
 			document.getElementById('dashboardSec').style.display='block';
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('msgSec').style.display='none';
@@ -218,6 +225,7 @@
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('settingsSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
+			document.getElementById('success').style.display='none';
 
 		})
 		document.getElementById('settings').addEventListener('click',function(){
@@ -225,6 +233,7 @@
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('msgSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
+			document.getElementById('success').style.display='none';
 
 		})
 		document.getElementById('about').addEventListener('click',function(){
@@ -232,6 +241,7 @@
 			document.getElementById('msgSec').style.display='none';
 			document.getElementById('settingsSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
+			document.getElementById('success').style.display='none';
 
 		})
 		</script>

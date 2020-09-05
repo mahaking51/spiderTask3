@@ -37,7 +37,6 @@ const userSchema=new mongoose.Schema({
     address:String,
     type:String,
     email:String,
-    purchased:Array,
 })
 const productSchema=new mongoose.Schema({
     name:String,
@@ -53,13 +52,19 @@ const cartSchema=new mongoose.Schema({
     pid:String,
     name:String,
     quantity:Number,
-    price:Number
+    price:Number,
+})
+const purchaseSchema=new mongoose.Schema({
+    username:String,
+    pid:String,
+    quantity:Number,
 })
 userSchema.plugin(passportLocalMongoose);
 
 const User =new mongoose.model('user',userSchema);
 const Product =new mongoose.model('product',productSchema);
 const Cart =new mongoose.model('cart',cartSchema);
+const Purchase =new mongoose.model('purchase',purchaseSchema);
 
 passport.use(User.createStrategy());
  
@@ -94,8 +99,9 @@ app.get('/register',function(req,res){
     res.render('register');
 })
 app.get('/dashboard/:name',async function(req,res){
+    src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=128&background=f6f5f5&color=393b44"
     if(req.isAuthenticated()){
-        res.render('dashboard',{name:req.params.name})
+        res.render('dashboard',{name:req.params.name,link:src});
     }
     else{
         res.redirect('/');
@@ -154,14 +160,25 @@ io.on('connection', function(socket) {
     })
     socket.on('addCart',function(data){
         console.log(data);
-        cart = new Cart({
-            username:data.user,
-            pid:data.id,
-            name:data.name,
-            quantity:data.quantity,
-            price:data.price
+        Cart.find({pid:data.id,username:data.user},function(err,arr){
+            if(arr.length==0){
+                cart = new Cart({
+                    username:data.user,
+                    pid:data.id,
+                    name:data.name,
+                    quantity:data.quantity,
+                    price:data.price,
+                    purchased:false
+                })
+                cart.save();
+            }
+            else{
+                Cart.updateOne({pid:data.id},{$inc:{quantity:data.quantity}},function(err,succ){
+
+                })
+            }
         })
-        cart.save();
+        
         Product.updateOne({_id:data.id},{$inc:{quantity:-1*(data.quantity)}},function(err,succ){
 
         })
@@ -174,6 +191,43 @@ io.on('connection', function(socket) {
     socket.on('productName',function(data){
         Cart.findOne({_id:data},function(err,obj){
             socket.emit('returnName',obj);
+        })
+    })
+    socket.on('removeItem',function(data){
+        Cart.findOne({pid:data.pid,username:data.user},function(err,obj){
+            Product.updateOne({_id:data.pid},{$inc:{quantity:obj.quantity}},function(err,succ){
+
+            })
+        })
+
+        Cart.remove({pid:data.pid,username:data.user},function(err,succ){
+
+        })
+       
+    })
+    socket.on('cartNumber',function(data){
+        Cart.find({username:data},function(err,arr){
+            socket.emit('cartLength',arr.length);
+        })
+    })
+    socket.on('purchase',function(data){
+        console.log(data);
+        Cart.find({username:data},function(err,arr){
+            for(var i=0;i<arr.length;i++){
+                purchase =new Purchase({
+                    username:arr[i].username,
+                    pid:arr[i].pid,
+                    quantity:arr[i].quantity
+                })
+                purchase.save();
+                Product.updateOne({_id:arr[i].pid},{$inc:{sold:arr[i].quantity}},function(err,succ){
+
+                })
+            }
+
+        })
+        Cart.deleteMany({username:data},function(err,succ){
+
         })
     })
 

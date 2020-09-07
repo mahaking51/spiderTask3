@@ -215,7 +215,7 @@ if(s2.length<8){
         xhr.open('GET','/detailsUser');
         xhr.responseType='json';
         xhr.onload=()=>{
-            var cond=false;
+            var cond=true;
             data=xhr.response
             for(var i=0;i<data.length;i++){
                 if(input.length<8){
@@ -259,6 +259,7 @@ if(s2.length<8){
         xhr.open('GET','/detailsUser');
         xhr.responseType='json';
         xhr.onload=()=>{
+            cond=true
             data=xhr.response;
             for(var i=0;i<data.length;i++){
                 if(!(input.includes('.') && input.includes('@'))){

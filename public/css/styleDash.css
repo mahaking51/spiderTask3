@@ -25,7 +25,9 @@
     line-height: 1.5;
     color: #212529;
     text-align: left;
-    background-color: #fff;
+    /* background-color: #fff; */
+    background-color: #f1f3f8;
+
   }
   
   body{
@@ -204,7 +206,7 @@
     margin-top: 70px;
     margin-left: 250px;
     padding: 40px;
-    height: 100vh;
+    min-height: 100vh;
     transition: 0.3s;
   }
   
@@ -252,4 +254,12 @@
   a{
     color: inherit; 
   text-decoration: inherit
+  }
+  canvas{
+
+    width:900px !important;
+    height:500px !important;
+    margin:auto !important;
+    margin-top: 5% !important;
+
   }

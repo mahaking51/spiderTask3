@@ -5,7 +5,11 @@ $(document).ready(()=>{
         type:'GET',
         dataType:'json',
         success:(data)=>{
+          console.log(data);
+          money=0;
+          document.getElementById('totalProd').innerHTML=data.length;
           for(var i=0;i<data.length;i++){
+            money=money+data[i].sold*data[i].price
             card='<div class="card mb-3" style="max-height: 300px; ">\
 						<div class="row no-gutters">\
 						  <div class="col-md-2">\
@@ -31,6 +35,7 @@ $(document).ready(()=>{
             </div>'
             document.getElementById('dashboardSellSec').innerHTML+=card;
           }
+          document.getElementById('totalMoney').innerHTML='Rs.'+money;
           if(data.length==0){
             document.getElementById('dashboardSellSec').innerHTML='<h2 style="text-align:center; padding:15px;border-radius:0.25rem; color:grey; " id="noProd">Sell some products and make some money!!!</h2>'
           }
@@ -97,7 +102,7 @@ $(document).ready(()=>{
               <div class="card-body">\
                 <h3 class="card-title">'+data[i].name+'</h3>\
                 <p class="card-text">'+data[i].desc+'</p>\
-                <p class="card-text">Seller : '+data[i].seller+'</p>\
+                <p class="card-text" id="seller'+i+'">Seller : '+data[i].seller+'</p>\
               </div>\
               </div>\
               <div class="col-md-4">\
@@ -122,13 +127,14 @@ $(document).ready(()=>{
             quantity=parseInt(document.getElementById('quantityBuy'+j).value);
             id=(details[0]);
             name=details[1];
+            seller=document.getElementById('seller'+j).innerHTML.slice(9);
             price=parseInt(details[2])
             console.log(details);
             if(quantity<document.getElementById('quantityBuy'+j).min || quantity>document.getElementById('quantityBuy'+j).max){
               alert('Recheck your number of quantity')
             }
             else{
-              socket.emit('addCart',{id:id,user:userName,quantity:quantity,name:name,price:price});
+              socket.emit('addCart',{id:id,user:userName,quantity:quantity,name:name,price:price,seller,seller});
               number=document.getElementById('quantityLeft'+j).innerHTML;
               number=number.split(' ');
               numberLeft=parseInt(number[0])-quantity;
@@ -143,9 +149,6 @@ $(document).ready(()=>{
                   cost=parseInt(costDet.slice(8))
                   cost=cost+price*quantity
                   document.getElementById('totalCost').innerHTML='Total : '+cost
-              }
-              else{
-                document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+cost+'</h4>'
               }
             }
             cartLength=document.getElementsByClassName('rem').length;
@@ -195,7 +198,7 @@ $(document).ready(()=>{
   })
 });
 //buyer cart display
-$('#buyer').click(function(){
+$('#messages').click(function(){
   document.getElementById('myCartItems').innerHTML='';
   $.ajax({
       url:'/cart/'+userName,
@@ -208,7 +211,13 @@ $('#buyer').click(function(){
           cost=cost+data[k].price*data[k].quantity;
           document.getElementById('myCartItems').innerHTML+='<li class="list-group-item" id="item'+k+'"><h4 style="display:inline">'+data[k].name+'</h4> - quantity : '+data[k].quantity+'<button class="btn btn-light float-right remLoad" id="remove'+k+'" style="margin-left:1rem;border-radius:50%;" value="'+data[k].pid+','+data[k].price*data[k].quantity+'"><i class="fas fa-times"></i></button>  <h5 style="display:inline" class="float-right">Rs.'+data[k].price*data[k].quantity+'</h5></li>'
         }
-        document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+cost+'</h4>'
+        cond=document.getElementById('totalCost');
+        if(cond){
+          document.getElementById('totalCost').innerHTML='Total : '+cost
+        }
+        else{
+          document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+cost+'</h4>'
+        }
         for(let i=0;i<data.length;i++){
           document.getElementById('remove'+i).addEventListener('click',function(){
             cartDetails=(document.getElementById('remove'+i).value).split(',');

@@ -54,11 +54,16 @@ const cartSchema=new mongoose.Schema({
     name:String,
     quantity:Number,
     price:Number,
+    seller:String
 })
 const purchaseSchema=new mongoose.Schema({
     username:String,
+    name:String,
+    seller:String,
     pid:String,
     quantity:Number,
+    date:Date,
+    cost:Number
 })
 userSchema.plugin(passportLocalMongoose);
 
@@ -177,7 +182,7 @@ io.on('connection', function(socket) {
                     name:data.name,
                     quantity:data.quantity,
                     price:data.price,
-                    purchased:false
+                    seller:data.seller
                 })
                 cart.save();
             }
@@ -221,12 +226,17 @@ io.on('connection', function(socket) {
     })
     socket.on('purchase',function(data){
         console.log(data);
+        date= new Date();
         Cart.find({username:data},function(err,arr){
             for(var i=0;i<arr.length;i++){
                 purchase =new Purchase({
                     username:arr[i].username,
+                    name:arr[i].name,
+                    seller:arr[i].seller,
                     pid:arr[i].pid,
-                    quantity:arr[i].quantity
+                    quantity:arr[i].quantity,
+                    date:date,
+                    cost:arr[i].price*arr[i].quantity
                 })
                 purchase.save();
                 Product.updateOne({_id:arr[i].pid},{$inc:{sold:arr[i].quantity}},function(err,succ){
@@ -245,6 +255,35 @@ io.on('connection', function(socket) {
             if(err){
                 console.log(err);
             }
+        })
+    })
+    socket.on('recentPurchases',function(data){
+        Purchase.find({username:data},function(err,arr){
+            socket.emit('returnPurchase',arr)
+        })
+    })
+    socket.on('pidName',function(data){
+        Product.findOne({_id:data},function(err,obj){
+            socket.emit('returnProd',obj)
+        })
+    })
+    socket.on('purchaseReport',function(data){
+        // Purchase.find( { $query: {}, $orderby: { date : -1 } },function(err,succ){
+
+        // } )
+        Purchase.find({seller:data},function(err,arr){
+
+            socket.emit('returnPurchaseReport',arr)
+        })
+    })
+    socket.on('sellProd',function(data){
+        Product.find({seller:data},function(err,arr){
+            socket.emit('returnProd',arr)
+        })
+    })
+    socket.on('prodPurchase',function(data){
+        Purchase.find({pid:data},function(err,arr){
+            socket.emit('returnProdReport',arr);
         })
     })
 })

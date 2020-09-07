@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -161,9 +161,92 @@
 					<h1 style="text-align: center;">Purchase successful!!!</h1>
 					<h3 style="text-align: center;">Order will be delivered to your registered address</h3>
 				</div>
+				<div id="profileDisplay" style="display: none;">
+					<div id='buyerProfile' class="container" style="width:75%" >
+						<img src="/src/man.png" alt="" height='175px' width='175px' style="display:block;margin-left:auto;margin-right:auto">
+						<form>
+							<div class="form-group row">
+							  <label for="staticEmail" class="col-sm-2 col-form-label"><h5>Username</h5></label>
+							  <div class="col-sm-10">
+								<!-- <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com"> -->
+								<h5 id='nameProfile' style="margin-top:8px">Test</h5>
+							  </div>
+							</div>
+							<div class="form-group row">
+							  <label for="inputPassword" class="col-sm-2 col-form-label"><h5>Email</h5></label>
+							  <div class="col-sm-10">
+								<!-- <input type="password" class="form-control" id="inputPassword"> -->
+								<h5 id='emailProfile' style="margin-top:8px">xyz@gmail.com</h5>
+							  </div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword" class="col-sm-2 col-form-label"><h5>Address</h5></label>
+								<div class="col-sm-10">
+								  <!-- <input type="password" class="form-control" id="inputPassword"> -->
+								  <textarea class="form-control" id="buyerAddress" rows="3" readonly>Testing</textarea >
+								</div>
+							  </div>
+						  </form>
+						  <h3 style="margin-top:3rem">Recently Purchased</h3>
+						  <ul class="list-group" id='recentPurchase'>
+
+						  </ul>
+					</div>
+					<div id='sellerProfile' class="container" style="width:75%;">
+						<img src="/src/man.png" alt="" height='175px' width='175px' style="display:block;margin-left:auto;margin-right:auto">
+
+						<form>
+							<div class="form-group row">
+							  <label for="staticEmail" class="col-sm-2 col-form-label"><h5>Username</h5></label>
+							  <div class="col-sm-10">
+								<!-- <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com"> -->
+								<h5 id='sellerName' style="margin-top:8px">Test</h5>
+							  </div>
+							</div>
+							<div class="form-group row">
+							  <label for="inputPassword" class="col-sm-2 col-form-label"><h5>Email</h5></label>
+							  <div class="col-sm-10">
+								<!-- <input type="password" class="form-control" id="inputPassword"> -->
+								<h5 id='sellerEmail' style="margin-top:8px">xyz@gmail.com</h5>
+							  </div>
+							</div>
+							<div class="form-group row">
+								<label for="inputPassword" class="col-sm-2 col-form-label"><h5>Address</h5></label>
+								<div class="col-sm-10">
+								  <!-- <input type="password" class="form-control" id="inputPassword"> -->
+								  <textarea class="form-control" id="sellerAddress" rows="3" readonly>Testing</textarea >
+								</div>
+							  </div>
+							  <div class="form-group row">
+								<label for="inputPassword" class="col-sm-2 col-form-label"><h5>Total number of products</h5></label>
+								<div class="col-sm-10">
+								  <!-- <input type="password" class="form-control" id="inputPassword"> -->
+								  <h5 id='totalProd' style="margin-top:8px">10</h5>
+								</div>
+							  </div>
+							  <div class="form-group row">
+								<label for="inputPassword" class="col-sm-2 col-form-label"><h5>Total money recieved</h5></label>
+								<div class="col-sm-10">
+								  <!-- <input type="password" class="form-control" id="inputPassword"> -->
+								  <h5 id='totalMoney' style="margin-top:8px">Rs.XXXX</h5>
+								</div>
+							  </div>
+						  </form>
+					</div>
+				</div>
 				<div id='settingsSec' style="display: none;">
-					<div class="card">
-						<p>Lorem Ipsum is simply settings text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+					<div id='sellerStats'>
+						<h2>Report:</h2>
+						<h3>Your Income for the past 6 days(in Rs)</h3>
+						<canvas id="sellerLineChart" height="500px" width="900px"></canvas>
+						<!-- <div id="sellerLineChart" style="width: 1000px; height: 600px"></div> -->
+						<h3>Your Income based on the products(in Rs.)</h3>
+						<canvas id="sellerPieChart" height="500px" width="900px"></canvas>
+
+						<!-- <div id="sellerPieChart" style="width: 500px; height: 500px"></div> -->
+					</div>
+					<div id="buyerStats">
+
 					</div>
 				</div>
 				<div id='aboutSec' style="display: none;">
@@ -175,8 +258,10 @@
 			<!--main container end-->
 		</div>
 		<!--wrap end-->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
         <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
-        <script src = "/socket.io/socket.io.js"></script>
+		<script src = "/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
 	function notification(){
 		$('#notification1').fadeIn();
@@ -186,6 +271,23 @@
 	}
     userName=document.getElementById('name').innerHTML;
     $(document).ready(()=>{
+		nowDate=new Date();
+					day1=1000*60*60*24;
+
+		socket.emit('recentPurchases',userName);
+					socket.on('returnPurchase',function(dat){
+						console.log(dat);
+						cond=document.getElementById('recentPurchase').innerHTML
+						console.log(cond);
+						for(var i=0;i<dat.length;i++){
+							purchaseDate= new Date(dat[i].date)
+							dateString= purchaseDate.toDateString();
+							if((( nowDate.getTime() - purchaseDate.getTime())/day1)<=7){
+								document.getElementById('recentPurchase').innerHTML+='<li class="list-group-item"><h4 class="">'+dat[i].name+'</h4>  quantity- '+dat[i].quantity+'<br> Seller :'+dat[i].seller+' <h4 class="float-right">Rs.'+dat[i].cost+'</h4><small  style="display:block"> on '+dateString+'</small></li>'
+							}
+						}
+					})	
+				
     $.ajax({
         url:'/users/'+userName,
         type:'GET',
@@ -195,7 +297,9 @@
             if(data.type==='buyer'){
 				document.getElementById('seller').style.display='none'
 				document.getElementById('dashboardSellSec').style.display='none';
-				document.getElementById('buyCart').style.display='block'
+				document.getElementById('buyCart').style.display='block';
+				document.getElementById('sellerProfile').style.display='none';
+				document.getElementById('sellerStats').style.display='none';
 				socket.emit('cartUpdate',userName);
 				socket.on('itemUpdate',function(data){
 					document.getElementById('buyer').innerHTML+='<span class="badge badge-light" id="cartItems" style="margin-top:3px;padding:5px;margin-left:6px;">'+data+'</span>'
@@ -205,7 +309,8 @@
                 document.getElementById('buyer').style.display='none'
                 document.getElementById('sellSec').style.display='block'
 				document.getElementById('dashboardBuySec').style.display='none'
-
+				document.getElementById('buyerProfile').style.display='none';
+				document.getElementById('buyerStats').style.display='none';
             }
         }
     })
@@ -221,16 +326,37 @@
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('msgSec').style.display='none';
 			document.getElementById('settingsSec').style.display='none';
+			document.getElementById('profileDisplay').style.display='none';
 
 		})
-		document.getElementById('messages').addEventListener('click',function(){
-			
+		document.getElementById('messages').addEventListener('click',function(){	
 			document.getElementById('msgSec').style.display='block';
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('settingsSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
 			document.getElementById('success').style.display='none';
-
+			document.getElementById('profileDisplay').style.display='none';
+		})
+		document.getElementById('profile').addEventListener('click',function(){
+			document.getElementById('profileDisplay').style.display='block';
+			document.getElementById('msgSec').style.display='none';
+			document.getElementById('aboutSec').style.display='none';
+			document.getElementById('settingsSec').style.display='none';
+			document.getElementById('dashboardSec').style.display='none';
+			document.getElementById('success').style.display='none';
+			document.getElementById('nameProfile').innerHTML=userName;
+			document.getElementById('sellerName').innerHTML=userName;
+			$.ajax({
+				url:'/users/'+userName,
+				type:'GET',
+				dataType:'json',
+				success:(data)=>{
+					document.getElementById('emailProfile').innerHTML=data.email;
+					document.getElementById('buyerAddress').innerHTML=data.address;
+					document.getElementById('sellerEmail').innerHTML=data.email;
+					document.getElementById('sellerAddress').innerHTML=data.address;
+				}
+			})
 		})
 		document.getElementById('settings').addEventListener('click',function(){
 			document.getElementById('settingsSec').style.display='block';
@@ -238,6 +364,7 @@
 			document.getElementById('msgSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
 			document.getElementById('success').style.display='none';
+			document.getElementById('profileDisplay').style.display='none';
 
 		})
 		document.getElementById('about').addEventListener('click',function(){
@@ -246,10 +373,12 @@
 			document.getElementById('settingsSec').style.display='none';
 			document.getElementById('dashboardSec').style.display='none';
 			document.getElementById('success').style.display='none';
+			document.getElementById('profileDisplay').style.display='none';
 
 		})
 		</script>
 		<script src="/js/buyer.js"></script>
 		<script src="/js/user.js"></script>
+		<script src="/js/charts.js"></script>
 	</body>
 </html>

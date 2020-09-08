@@ -22,7 +22,6 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    // cookie: { secure: true }
 }))
 
 app.use(passport.initialize());
@@ -79,7 +78,6 @@ passport.deserializeUser(User.deserializeUser());
 
 app.get('/',function(req,res){
         res.render('login',{cond:true});
-        const url='https://pixabay.com/api/?key=18163249-030c794f94b190a9cfe26d956&q=yellow+flowers&image_type=photo&per_page=3&pretty=false';
 })
 app.get('/login/fail',function(req,res){
     res.render('login',{cond:false})
@@ -109,9 +107,6 @@ app.get('/detailsUser',function(req,res){
         res.send(arr);
     })
 })
-// app.get('/register',function(req,res){
-//     res.render('register');
-// })
 app.get('/dashboard/:name',async function(req,res){
     src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=128&background=f6f5f5&color=393b44"
     if(req.isAuthenticated()){

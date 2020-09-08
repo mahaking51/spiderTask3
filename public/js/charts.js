@@ -24,24 +24,14 @@ function lineGraph(){
         for(var i=0;i<6;i++){
             date.push((weekIter.getDate()+'/'+(weekIter.getMonth()+1)));
             mon.push(0);
-            // console.log(weekIter.toString());
             for(var j=0;j<data.length;j++){
                 dataDate=new Date(data[j].date);
                 if(((dataDate.getTime()-weekIter.getTime())/day1)<1 && ((dataDate.getTime()-weekIter.getTime())/day1)>=0){
-                    // date.push(dataDate)
-                    // mon.push(data[j].cost);
                     mon[mon.length-1]+=data[j].cost
                 }
-                // else{
-                //     weekIter=new Date(data[j].date)
-                //     date.push(dataDate);
-                //     mon.push(data[j].cost)
-                // }
             }
             weekIter=weekIter.setDate(weekIter.getDate()+1)
             weekIter= new Date(weekIter)
-            // console.log(date);
-            // console.log(mon);
         }
         
     })
@@ -80,8 +70,6 @@ socket.on('returnProd',function(data){
 
 }
 pieChart();
-// console.log(products);
-// console.log(costs);
 console.log(a);
 buyerDate=[]
 buyerCost=[]
@@ -100,15 +88,8 @@ function barGraph(){
             for(var j=0;j<data.length;j++){
                 dataDate=new Date(data[j].date);
                 if(((dataDate.getTime()-weekIter.getTime())/day1)<1 && ((dataDate.getTime()-weekIter.getTime())/day1)>=0){
-                    // date.push(dataDate)
-                    // mon.push(data[j].cost);
                     buyerCost[buyerCost.length-1]+=data[j].cost
                 }
-                // else{
-                //     weekIter=new Date(data[j].date)
-                //     date.push(dataDate);
-                //     mon.push(data[j].cost)
-                // }
             }
             weekIter=weekIter.setDate(weekIter.getDate()+1)
             weekIter= new Date(weekIter)
@@ -140,7 +121,6 @@ $.ajax({
                     }]
                 },
 
-                // Configuration options go here
                 options: {
                     scales: {
                         yAxes: [{
@@ -165,7 +145,6 @@ $.ajax({
                         backgroundColor:colors.slice(0,products.length-1)
                     }],
                 
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
                     labels: products,
                     plugins: {
                         datalabels: {
@@ -207,7 +186,6 @@ $.ajax({
                     }]
                 },
 
-                // Configuration options go here
                 options: {
                     scales: {
                         yAxes: [{

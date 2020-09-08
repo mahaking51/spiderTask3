@@ -21,7 +21,7 @@ else{
 });
 setTimeout(function(){
     window.location.reload();
-},1100);
+},1000);
 })
 
 $('#searchInput').keyup(()=>{

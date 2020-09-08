@@ -2,8 +2,9 @@
 <html lang="en" dir="ltr">
 	<head>
 		<meta charset="utf-8">
-        <title>Userpage</title>
-        <link rel="stylesheet" type='text/css' href="/css/styleDash.css">
+        <title><%=name%></title>
+		<link rel="stylesheet" type='text/css' href="/css/styleDash.css">
+		<link rel="icon" href="/src/shopping-cart (1).png" type="image/png">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
@@ -22,12 +23,19 @@
 			<li class="list-group-item result">Porta ac consectetur ac</li>
 			<li class="list-group-item result">Vestibulum at eros</li> -->
 		  </ul>
+		  <div class="hover_bkgr_fricc">
+			<span class="helper"></span>
+			<div>
+				<div class="popupCloseButton">&times;</div>
+				<img src="" alt="" id='qrcode' height="400" width='400'>
+			</div>
+		</div>
 		<!--wrap start-->
 		<div class="wrap">
 			<!--header menu start-->
 			<div class="header">
 				<div class="header-menu">
-					<div class="title">XYZ</div>
+					<div class="title">Shop<span>Drop</span></div>
 					<div class="sidebar-btn">
 						<i class="fas fa-bars"></i>
 					</div>
@@ -96,7 +104,7 @@
 					<h5>Product Values Successfully Updated...</h5>
 				  </div>
 				<div id='dashboardSec'>
-				<div id='dashboardSellSec' >
+				<div id='dashboardSellSec'>
 					<h3 >Your Products : </h3>
 				</div>
 				<div id='dashboardBuySec'>
@@ -199,6 +207,12 @@
 								  <textarea class="form-control" id="buyerAddress" rows="3" readonly>Testing</textarea >
 								</div>
 							  </div>
+
+
+							<a class="trigger_popup_fricc">Click here to view the QR</a>	
+							  
+							  
+
 						  </form>
 						  <h3 style="margin-top:3rem">Recently Purchased</h3>
 						  <ul class="list-group" id='recentPurchase'>
@@ -280,9 +294,18 @@
 		setTimeout(function(){
 			$('#notification1').fadeOut(1000);
 		},3750)
-	}
+		}
     userName=document.getElementById('name').innerHTML;
     $(document).ready(()=>{
+		url=window.location.href;
+		if(localStorage.getItem('usernameShop')==null || localStorage.getItem('usernameShop')==''){
+			localStorage.setItem('usernameShop',userName)
+		}
+		if(!url.includes(localStorage.getItem('usernameShop'))){
+			window.location.href="http://localhost:3000/dashboard/"+localStorage.getItem('usernameShop')
+		}
+		
+
 		nowDate=new Date();
 					day1=1000*60*60*24;
 
@@ -316,6 +339,30 @@
 				socket.on('itemUpdate',function(data){
 					document.getElementById('buyer').innerHTML+='<span class="badge badge-light" id="cartItems" style="margin-top:3px;padding:5px;margin-left:6px;">'+data+'</span>'
 				})
+				$(".trigger_popup_fricc").click(function(){
+				$('.hover_bkgr_fricc').show();
+				socket.emit('qrData',userName);
+							socket.on('qrcode',function(dat){
+								info={
+								username:data.username,
+								email:data.email,
+								address:data.address,
+								purchases:dat
+							}
+							info=JSON.stringify(info)
+							document.getElementById('qrcode').src='https://api.qrserver.com/v1/create-qr-code/?data='+info+'&amp;size=80x80'
+							console.log(info);
+							})
+
+				});
+				$('.hover_bkgr_fricc').click(function(){
+					$('.hover_bkgr_fricc').hide();
+				});
+				$('.popupCloseButton').click(function(){
+					$('.hover_bkgr_fricc').hide();
+				});
+				
+				
             }
             else{
                 document.getElementById('buyer').style.display='none'
@@ -333,7 +380,12 @@
 				$(".wrap").toggleClass("coll");
 			});
 		});
+		document.getElementById('about').addEventListener('click',function(){
+			localStorage.setItem('usernameShop','')
+			window.location.href='/';
+		})
 		document.getElementById('dashboard').addEventListener('click',function(){
+			window.location.reload();
 			document.getElementById('dashboardSec').style.display='block';
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('msgSec').style.display='none';

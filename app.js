@@ -127,7 +127,6 @@ app.get('/logout',function(req,res){
     res.redirect('/');
 })
 app.post('/register',function(req,res){
-    
     User.register({username:req.body.username,type:req.body.type,email:req.body.email,address:req.body.address, active: false}, req.body.password, function(err, user) {
         if (err) { 
             console.log(err);
@@ -289,6 +288,11 @@ io.on('connection', function(socket) {
     socket.on('purchaseHistory',function(data){
         Purchase.find({username:data},function(err,arr){
             socket.emit('returnHistory',arr)
+        })
+    })
+    socket.on('qrData',function(data){
+        Purchase.find({username:data},function(err,arr){
+            socket.emit('qrcode',arr)
         })
     })
 })

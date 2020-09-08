@@ -286,6 +286,11 @@ io.on('connection', function(socket) {
             socket.emit('returnProdReport',arr);
         })
     })
+    socket.on('purchaseHistory',function(data){
+        Purchase.find({username:data},function(err,arr){
+            socket.emit('returnHistory',arr)
+        })
+    })
 })
 http.listen(3000, function() {
     console.log('listening on *:3000');

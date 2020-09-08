@@ -15,7 +15,13 @@
     </head>
     
 	<body>
-
+		<ul class="list-group" id='searchHints' style="display: none;">
+			<!-- <li class="list-group-item result">Cras justo odio</li>
+			<li class="list-group-item result">Dapibus ac facilisis in</li>
+			<li class="list-group-item result">Morbi leo risus</li>
+			<li class="list-group-item result">Porta ac consectetur ac</li>
+			<li class="list-group-item result">Vestibulum at eros</li> -->
+		  </ul>
 		<!--wrap start-->
 		<div class="wrap">
 			<!--header menu start-->
@@ -26,7 +32,14 @@
 						<i class="fas fa-bars"></i>
 					</div>
 					<ul>
-						<li><a href="#"><i class="fas fa-search"></i></a></li>
+						<div class="wrapper" id='buyerSearch'>
+							<div class="search">
+							   <input type="text" class="searchTerm" id='searchInput' placeholder="What are you looking for?">
+							   <button type="submit" class="searchButton" id="searchBut">
+								 <i class="fa fa-search"></i>
+							  </button>
+							</div>
+						 </div>
 					</ul>
 				</div>
 			</div>
@@ -75,6 +88,7 @@
 					</li>
 				</div>
 			</div>
+			
 			<!--sidebar end-->
 			<!--main container start-->
 			<div class="main-container" style="background-color: #f1f3f8;">
@@ -86,7 +100,6 @@
 					<h3 >Your Products : </h3>
 				</div>
 				<div id='dashboardBuySec'>
-
 				</div>
 			</div>
                 <div id='msgSec' style="display: none;">
@@ -132,7 +145,7 @@
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  Are you sure you want to post the product,You will ont be able to change the price of the product again.
+                                  Are you sure you want to post the product??
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -246,13 +259,12 @@
 						<!-- <div id="sellerPieChart" style="width: 500px; height: 500px"></div> -->
 					</div>
 					<div id="buyerStats">
-
+						<h2>Your expenditure on the past 6 days</h2>
+						<canvas id='buyerBarChart' height="500px" width="900px"></canvas>
 					</div>
 				</div>
 				<div id='aboutSec' style="display: none;">
-					<div class="card">
-						<p>Lorem Ipsum is simply about text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-					</div>
+					
 				</div>
 			</div>
 			<!--main container end-->
@@ -282,7 +294,7 @@
 						for(var i=0;i<dat.length;i++){
 							purchaseDate= new Date(dat[i].date)
 							dateString= purchaseDate.toDateString();
-							if((( nowDate.getTime() - purchaseDate.getTime())/day1)<=7){
+							if((( nowDate.getTime() - purchaseDate.getTime())/day1)<=7 && (( nowDate.getTime() - purchaseDate.getTime())/day1)>=0){
 								document.getElementById('recentPurchase').innerHTML+='<li class="list-group-item"><h4 class="">'+dat[i].name+'</h4>  quantity- '+dat[i].quantity+'<br> Seller :'+dat[i].seller+' <h4 class="float-right">Rs.'+dat[i].cost+'</h4><small  style="display:block"> on '+dateString+'</small></li>'
 							}
 						}
@@ -311,6 +323,7 @@
 				document.getElementById('dashboardBuySec').style.display='none'
 				document.getElementById('buyerProfile').style.display='none';
 				document.getElementById('buyerStats').style.display='none';
+				document.getElementById('buyerSearch').style.display='none';
             }
         }
     })
@@ -321,7 +334,6 @@
 			});
 		});
 		document.getElementById('dashboard').addEventListener('click',function(){
-			window.location.reload();
 			document.getElementById('dashboardSec').style.display='block';
 			document.getElementById('aboutSec').style.display='none';
 			document.getElementById('msgSec').style.display='none';

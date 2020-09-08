@@ -60,12 +60,13 @@ $(document).ready(()=>{
     })
 });
 //Buyer dashboard 
-$(document).ready(()=>{
+$("#dashboard").click(()=>{
   $.ajax({
       url:'/available',
       type:'GET',
       dataType:'json',
       success:(data)=>{
+        document.getElementById('dashboardBuySec').innerHTML='';
         for(var i=0;i<data.length;i++){
           if(data[i].quantity==0){
             card='<div class="card mb-3" style="max-height: 300px; ">\
@@ -141,55 +142,6 @@ $(document).ready(()=>{
               document.getElementById('quantityLeft'+j).innerHTML=numberLeft+' items Left';
               cartQuant=parseInt(document.getElementById('cartItems').innerHTML);
               document.getElementById('cartItems').innerHTML=cartQuant+1;
-              document.getElementById('myCartItems').innerHTML+='<li class="list-group-item" id="itemrem'+j+'"><h4 style="display:inline">'+name+'</h4> - quantity : '+quantity+'<button class="btn btn-light float-right rem" id="rem'+j+'" style="margin-left:1rem;border-radius:50%;" value="'+id+','+price*quantity+'"><i class="fas fa-times"></i></button> <h5 style="display:inline" class="float-right">Rs.'+price*quantity+'</h5></li>'
-              condition=document.getElementById('totalCost');
-              a.push(j);
-              if(condition){
-                costDet=document.getElementById('totalCost').innerHTML;
-                  cost=parseInt(costDet.slice(8))
-                  cost=cost+price*quantity
-                  document.getElementById('totalCost').innerHTML='Total : '+cost
-              }
-            }
-            cartLength=document.getElementsByClassName('rem').length;
-            for(let l=0;l<a.length;l++){
-              document.getElementById('rem'+a[l]).addEventListener('click',function(){
-                console.log('clickedrem'+a[l]);
-                cartDetails=(document.getElementById('rem'+a[l]).value).split(',');
-                pid=cartDetails[0];
-                itemCost=parseInt(cartDetails[1])
-                socket.emit('removeItem',{pid:pid,user:userName});
-                document.getElementById('itemrem'+a[l]).style.display='none';
-                numberItems=parseInt(document.getElementById('cartItems').innerHTML);
-                numberItems--;
-                document.getElementById('cartItems').innerHTML=numberItems;
-                cond=document.getElementById('totalCost');
-                if(cond){
-                  costDet=document.getElementById('totalCost').innerHTML;
-                  cost=parseInt(costDet.slice(8))
-                  cost=cost-itemCost
-                  document.getElementById('totalCost').innerHTML='Total : '+cost
-                }
-                else{
-                  // document.getElementById('myCart').innerHTML+='<h4 class="float-right" style="margin-top:1.2rem" id="totalCost">Total : '+itemCost+'</h4>'
-                }
-              })
-            }
-            loadedLength=document.getElementsByClassName('remLoad').length;
-            console.log(loadedLength);
-            for(let g=0;g<loadedLength;g++){
-              document.getElementById('remove'+g).addEventListener('click',function(){
-                console.log('clicked'+g);
-                cartDetails=(document.getElementById('remove'+g).value).split(',');
-            pid=cartDetails[0]
-            cost=cost-parseInt(cartDetails[1]);
-            socket.emit('removeItem',{pid:pid,user:userName});
-            document.getElementById('item'+g).style.display='none';
-            document.getElementById('totalCost').innerHTML='Total : '+cost;
-            numberItems=parseInt(document.getElementById('cartItems').innerHTML);
-            numberItems--;
-            document.getElementById('cartItems').innerHTML=numberItems;
-              })
             }
           })
         }
@@ -197,6 +149,95 @@ $(document).ready(()=>{
       }
   })
 });
+$(document).ready(()=>{
+  $.ajax({
+    url:'/available',
+    type:'GET',
+    dataType:'json',
+    success:(data)=>{
+      document.getElementById('dashboardBuySec').innerHTML='';
+      for(var i=0;i<data.length;i++){
+        if(data[i].quantity==0){
+          card='<div class="card mb-3" style="max-height: 300px; ">\
+        <div class="row no-gutters">\
+          <div class="col-md-2">\
+          <img src="'+data[i].img+'" class="card-img" alt="Image not available" height="150" width="150" style="width:100%;max-width:540px;display:inline-block;">\
+          </div>\
+          <div class="col-md-6">\
+          <div class="card-body">\
+            <h3 class="card-title">'+data[i].name+'</h3>\
+            <p class="card-text">'+data[i].desc+'</p>\
+            <p class="card-text">Seller : '+data[i].seller+'</p>\
+          </div>\
+          </div>\
+          <div class="col-md-4">\
+          <h4 class="card-text">Rs.'+data[i].price+'</h4>\
+          <h4 class="card-text" id="quantityLeft'+i+'">'+data[i].quantity+' items left</h4>\
+          <form action="">\
+          <input class="form-control" type="number" id="quantityBuy'+i+'"  min="1" max="'+data[i].quantity+'" value="1"></input>\
+          <button class="btn btn-outline-dark buyBtn" id="buy'+i+'" value="'+data[i]._id+'" type="submit" style="margin-top:1rem;" disabled>Sold Out</button>\
+          </form>\
+          </div>\
+        </div>\
+        </div>'
+        document.getElementById('dashboardBuySec').innerHTML+=card;
+        }
+        else{
+          card='<div class="card mb-3" style="max-height: 300px; ">\
+          <div class="row no-gutters">\
+            <div class="col-md-2">\
+            <img src="'+data[i].img+'" class="card-img" alt="Image not available" height="150" width="150" style="width:100%;max-width:540px;display:inline-block;">\
+            </div>\
+            <div class="col-md-6">\
+            <div class="card-body">\
+              <h3 class="card-title">'+data[i].name+'</h3>\
+              <p class="card-text">'+data[i].desc+'</p>\
+              <p class="card-text" id="seller'+i+'">Seller : '+data[i].seller+'</p>\
+            </div>\
+            </div>\
+            <div class="col-md-4">\
+            <h4 class="card-text">Rs.'+data[i].price+'</h4>\
+            <h4 class="card-text" id="quantityLeft'+i+'">'+data[i].quantity+' items left</h4>\
+            <form action="">\
+            <input class="form-control" type="number" id="quantityBuy'+i+'"  min="1" max="'+data[i].quantity+'" value="1"></input>\
+            <button class="btn btn-outline-dark buyBtn" id="buy'+i+'" value="'+data[i]._id+','+data[i].name+','+data[i].price+'" type="submit" style="margin-top:1rem;">Add to Cart</button>\
+            </form>\
+            </div>\
+          </div>\
+          </div>'
+          document.getElementById('dashboardBuySec').innerHTML+=card;
+        }
+      }
+      len=data.length;
+      a=[]
+      for(let j=0;j<len;j++){
+        document.getElementById('buy'+j).addEventListener('click',function(e){
+          e.preventDefault();
+          details=(document.getElementById('buy'+j).value.split(','));
+          quantity=parseInt(document.getElementById('quantityBuy'+j).value);
+          id=(details[0]);
+          name=details[1];
+          seller=document.getElementById('seller'+j).innerHTML.slice(9);
+          price=parseInt(details[2])
+          console.log(details);
+          if(quantity<document.getElementById('quantityBuy'+j).min || quantity>document.getElementById('quantityBuy'+j).max){
+            alert('Recheck your number of quantity')
+          }
+          else{
+            socket.emit('addCart',{id:id,user:userName,quantity:quantity,name:name,price:price,seller,seller});
+            number=document.getElementById('quantityLeft'+j).innerHTML;
+            number=number.split(' ');
+            numberLeft=parseInt(number[0])-quantity;
+            document.getElementById('quantityLeft'+j).innerHTML=numberLeft+' items Left';
+            cartQuant=parseInt(document.getElementById('cartItems').innerHTML);
+            document.getElementById('cartItems').innerHTML=cartQuant+1;
+          }
+        })
+      }
+  
+    }
+})
+})
 //buyer cart display
 $('#messages').click(function(){
   document.getElementById('myCartItems').innerHTML='';

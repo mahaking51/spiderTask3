@@ -209,17 +209,17 @@ if(s2.length<8){
         trigger:'keyup',
         title:'Email Status',
     })
+    var condUser=false;
     $('#username').keyup(function(){
         
         input=($('#username').val());
         xhr.open('GET','/detailsUser');
         xhr.responseType='json';
         xhr.onload=()=>{
-            var cond=true;
             data=xhr.response
             for(var i=0;i<data.length;i++){
                 if(input.length<8){
-                    cond=false;
+                    condUser=false;
                     suggest=suggestUsername(input);
                     $('#username').attr('data-original-title','Username is short')
                     $('#username').attr('data-content','Username shd atleast have 8 char Some suggestions : '+suggest)
@@ -228,7 +228,7 @@ if(s2.length<8){
                 }
                 else{
                     if(data[i].username===input){
-                    cond=false;
+                    condUser=false;
                     suggest=suggestUsername(input);
                     $('#username').attr('data-original-title','Username Already taken')
                     $('#username').attr('data-content','Some suggestions : '+suggest)
@@ -236,7 +236,7 @@ if(s2.length<8){
                     break;
                 }
                 else{
-                    cond=true
+                    condUser=true
                     $('#username').attr('data-original-title','Username Available')
                     $('#username').attr('data-content','')
                     $('#username').popover('show');
@@ -244,7 +244,7 @@ if(s2.length<8){
                 }
                 
             }
-            if(!cond){
+            if(!(condEmail && condUser)){
             $('#submitbut').prop('disabled',true)
         }
         else{
@@ -254,34 +254,34 @@ if(s2.length<8){
         }
         xhr.send();
     })
+    var condEmail=false;
     $('#email').keyup(function(){
         input=$('#email').val();
         xhr.open('GET','/detailsUser');
         xhr.responseType='json';
         xhr.onload=()=>{
-            cond=true
             data=xhr.response;
             for(var i=0;i<data.length;i++){
                 if(!(input.includes('.') && input.includes('@'))){
-                    cond=false
+                    condEmail=false
                     $('#email').attr('data-original-title','invalid Email')
                     $('#email').popover('show');
                 }
                 else{
                     if(data[i].email===input){
-                    cond=false
+                    condEmail=false
                     $('#email').attr('data-original-title','Email Already Registered')
                     $('#email').popover('show');
                     break;
                 }
                 else{
-                    cond=true
+                    condEmail=true
                     $('#email').attr('data-original-title','Email Vaild')
                     $('#email').popover('show');
                 }
                 }
             }
-            if(!cond){
+            if(!(condEmail && condUser)){
                 $('#submitbut').prop('disabled',true)
             }
             else{

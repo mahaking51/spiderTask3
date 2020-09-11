@@ -115,7 +115,7 @@ $('#searchInput').keyup(()=>{
                         document.getElementById('buy'+a[j]).addEventListener('click',function(e){
                           e.preventDefault();
                           details=(document.getElementById('buy'+a[j]).value.split(','));
-                          quantity=parseInt(document.getElementById('quantityBuy'+j).value);
+                          quantity=parseInt(document.getElementById('quantityBuy'+a[j]).value);
                           id=(details[0]);
                           name=details[1];
                           seller=document.getElementById('seller'+a[j]).innerHTML.slice(9);

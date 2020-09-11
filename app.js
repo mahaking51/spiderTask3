@@ -107,6 +107,11 @@ app.get('/detailsUser',function(req,res){
         res.send(arr);
     })
 })
+app.get('/purchaserecord/:name',function(req,res){
+    Purchase.find({seller:req.params.name},function(err,arr){
+        res.send(arr)
+    })
+})
 app.get('/dashboard/:name',async function(req,res){
     src="https://ui-avatars.com/api/?name="+req.params.name+"&rounded=true&bold=true&size=128&background=f6f5f5&color=393b44"
     if(req.isAuthenticated()){
@@ -288,6 +293,11 @@ io.on('connection', function(socket) {
     socket.on('qrData',function(data){
         Purchase.find({username:data},function(err,arr){
             socket.emit('qrcode',arr)
+        })
+    })
+    socket.on('purchaseUser',function(data){
+        User.findOne({username:data},function(err,obj){
+            socket.emit('returnUserDet',obj)
         })
     })
 })

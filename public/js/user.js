@@ -59,6 +59,61 @@ $(document).ready(()=>{
         }
     })
 });
+function userDet(nam){
+  socket.emit('purchaseUser',nam);
+    return new Promise((resolve,reject)=>{
+      socket.on('returnUserDet',function(dat){
+      resolve (dat)
+    })
+  })
+}
+//seller purchase record
+$('#historyPurchase').click(()=>{
+
+  document.getElementById('sellerProfile').style.display='none';
+  document.getElementById('historyRec').style.display='block';
+  document.getElementById('tableRecord').innerHTML=''
+
+  $.ajax({
+    url:'/purchaserecord/'+userName,
+    type:'GET',
+    dataType:'json',
+    success: async (data)=>{
+      let reqAddress,reqEmail
+      console.log(data);
+      document.getElementById('tableRecord').innerHTML=''
+      document.getElementById("myTableID").innerHTML='<thead class="thead-dark">\
+      <tr>\
+      <th scope="col">Date & time</th>\
+      <th scope="col">Username</th>\
+      <th scope="col">Product Bought</th>\
+      <th scope="col">Address</th>\
+      <th scope="col">Email</th>\
+      </tr>\
+    </thead>'
+      var table = document.getElementById("myTableID");
+      for(let i=0;i<data.length;i++){
+        var row = table.insertRow(i+1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        reqDate= new Date(data[i].date)
+        dateString=reqDate.getDate()  + "-" + (reqDate.getMonth()+1) + "-" + reqDate.getFullYear() + "<br>" +
+        reqDate.getHours() + ":" + reqDate.getMinutes();
+        cell1.innerHTML=dateString;
+        cell2.innerHTML=data[i].username;
+        cell3.innerHTML=data[i].name;
+
+          let reqObj= await userDet(data[i].username);
+          console.log(reqObj);
+           cell4.innerHTML= reqObj.address;
+           cell5.innerHTML= reqObj.email
+      }
+    }
+  })
+})
 //Buyer dashboard 
 $("#dashboard").click(()=>{
   $.ajax({

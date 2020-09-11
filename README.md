@@ -25,7 +25,7 @@ listening on *:3000
 ```
 To use application, open a browser of your choice and visit http://localhost:3000
 ### Usage
-Choose ur role (buyer/seller), choose ur role (buyer/seller) and login . 
+Choose ur role (buyer/seller) and login . 
 #### Seller
 Start selling products and make money .  
 Update quantities and price of your products .  

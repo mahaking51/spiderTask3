@@ -12,6 +12,12 @@ const passport = require('passport');
 const passportLocalMongoose = require("passport-local-mongoose");
 app.set('view engine','ejs');
 const https = require('https');
+const path = require('path');
+const crypto = require('crypto');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+
 
 app.use(bodyParser.urlencoded({
     extended:true
@@ -26,10 +32,38 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
+mongoURI='mongodb://localhost:27017/buydb'
 mongoose.connect('mongodb://localhost:27017/buydb',{useNewUrlParser:true });
 mongoose.set('useCreateIndex',true)
+const conn=mongoose.connection;
+let gfs;
+
+conn.once('open', () => {
+    // Init stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+  });  
+
+const storage = new GridFsStorage({
+    url: mongoURI,
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err);
+          }
+          const filename = buf.toString('hex') + path.extname(file.originalname);
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+          };
+          resolve(fileInfo);
+        });
+      });
+    }
+  });
+const upload = multer({ storage });
+
 const userSchema=new mongoose.Schema({
     username:String,
     pwd:String,
@@ -126,6 +160,26 @@ app.get('/logout',function(req,res){
     req.logOut();
     res.redirect('/');
 })
+app.get('/image/:name', (req, res) => {
+    gfs.files.findOne({ filename: req.params.name }, (err, file) => {
+      // Check if file
+      if (!file || file.length === 0) {
+        return res.status(404).json({
+          err: 'No file exists'
+        });
+      }
+      // Check if image
+      if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+        // Read output to browser
+        const readstream = gfs.createReadStream(file.filename);
+        readstream.pipe(res);
+      } else {
+        res.status(404).json({
+          err: 'Not an image'
+        });
+      }
+    });
+  });  
 app.post('/register',function(req,res){
     User.register({username:req.body.username,type:req.body.type,email:req.body.email,address:req.body.address, active: false}, req.body.password, function(err, user) {
         if (err) { 
@@ -156,6 +210,22 @@ app.post('/login',function(req,res){
         }
     })
 })
+app.post('/upload',upload.single('file'),(req,res)=>{
+    // res.json({ file: req.file.filename });
+    filename='/image/'+req.file.filename
+    console.log(req.body);
+    product =new Product({
+        name:req.body.name,
+        seller:req.body.submit,
+        quantity:req.body.quant,
+        sold:0,
+        price:req.body.price,
+        desc:req.body.desc,
+        img:filename
+    })
+    product.save();
+    res.redirect('/dashboard/'+req.body.submit);
+  })
 io.on('connection', function(socket) {
     socket.on('addProduct',function(data){
         console.log(data);

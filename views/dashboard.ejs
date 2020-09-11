@@ -116,32 +116,41 @@
                     <img src="/src/sell.png" alt="" height="200px" width='200px' style="display:block;margin-left:auto;margin-right:auto">
                     <h1 style="text-align: center; margin-bottom:2.5rem;">Sell Your Products</h1>
                     <h4>Enter the Products details:</h4>
-                    <form>
+                    <form action="/upload" method="POST" enctype="multipart/form-data">
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Name of the product</label>
                             <div class="col-sm-10">
-                              <input type="text" class="form-control" id="inputName" placeholder="Name" required>
+                              <input type="text" class="form-control" id="inputName" placeholder="Name" required name="name">
                             </div>
                           </div>
                         <div class="form-group row">
                           <label for="inputPassword" class="col-sm-2 col-form-label">Quantity</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" id="inputQuant" placeholder="Quantity" required>
+                            <input type="number" class="form-control" id="inputQuant" placeholder="Quantity" required name="value">
                           </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Price of each product</label>
                             <div class="col-sm-10">
-                              <input type="number" class="form-control" id="inputPrice" placeholder="Price" required>
+                              <input type="number" class="form-control" id="inputPrice" placeholder="Price" required name="price">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="inputDesc" rows="3" placeholder="Description" required></textarea>
+                                <textarea class="form-control" id="inputDesc" rows="3" placeholder="Description" required name="desc"></textarea>
                             </div>
-                          </div>
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Submit</button>    
+						  </div>
+						  <div class="input-group mb-3">
+							<div class="input-group-prepend">
+							  <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+							</div>
+							<div class="custom-file">
+							  <input type="file" class="custom-file-input" id="imageUpload" aria-describedby="inputGroupFileAddon01" name="file">
+							  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+							</div>
+						  </div>
+                          <button  class="btn btn-success" id='prevent' data-toggle="modal" data-target="#exampleModal" >Submit</button>    
                           <!-- Modal -->
                           <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -157,7 +166,7 @@
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" id="addProduct" class="btn btn-success">Submit</button>
+                                  <button type="submit" name="submit" id="addProduct" class="btn btn-success" value="<%=name%>">Submit</button>
                                 </div>
                               </div>
                             </div>
@@ -306,7 +315,8 @@
 			$('#notification1').fadeOut(1000);
 		},3750)
 		}
-    userName=document.getElementById('name').innerHTML;
+	userName=document.getElementById('name').innerHTML;
+	flagUpload=false
     $(document).ready(()=>{
 		url=window.location.href;
 		if(localStorage.getItem('usernameShop')==null || localStorage.getItem('usernameShop')==''){
@@ -316,7 +326,16 @@
 			window.location.href="http://localhost:3000/dashboard/"+localStorage.getItem('usernameShop')
 		}
 		
-
+		$('#imageUpload').on('change',function(){
+                //get the file name
+                var fileName = $(this).val();
+                //replace the "Choose a file" label
+				$(this).next('.custom-file-label').html(fileName);
+				flagUpload=true;
+        })
+		document.getElementById('prevent').addEventListener('click',function(e){
+			e.preventDefault();
+		})
 		nowDate=new Date();
 					day1=1000*60*60*24;
 

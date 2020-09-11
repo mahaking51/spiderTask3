@@ -126,7 +126,7 @@
                         <div class="form-group row">
                           <label for="inputPassword" class="col-sm-2 col-form-label">Quantity</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" id="inputQuant" placeholder="Quantity" required name="value">
+                            <input type="number" class="form-control" id="inputQuant" placeholder="Quantity" required name="quant">
                           </div>
                         </div>
                         <div class="form-group row">
@@ -143,7 +143,7 @@
 						  </div>
 						  <div class="input-group mb-3">
 							<div class="input-group-prepend">
-							  <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+							  <span class="input-group-text" id="inputGroupFileAddon01">Upload(optional)</span>
 							</div>
 							<div class="custom-file">
 							  <input type="file" class="custom-file-input" id="imageUpload" aria-describedby="inputGroupFileAddon01" name="file">
@@ -335,6 +335,15 @@
         })
 		document.getElementById('prevent').addEventListener('click',function(e){
 			e.preventDefault();
+			name=document.getElementById('inputName').value;
+			quantity=document.getElementById('inputQuant').value;
+			price=document.getElementById('inputPrice').value;
+			desc=document.getElementById('inputDesc').value;
+			console.log(name,quantity,price,desc);
+			if(name=='' || quantity=='' || price=='' || desc==''){
+				e.stopPropagation();
+				alert('enter values')
+			} 
 		})
 		nowDate=new Date();
 					day1=1000*60*60*24;

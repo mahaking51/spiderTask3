@@ -13,10 +13,10 @@ quantity=document.getElementById('inputQuant').value;
 price=document.getElementById('inputPrice').value;
 desc=document.getElementById('inputDesc').value;
   URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent(name)+"&per_page=3";
-  $.getJSON(URL, function(data){
+  $.getJSON(URL,async function(data){
     if (parseInt(data.totalHits) > 0){
         console.log(data.hits[0].previewURL);
-        socket.emit('addProduct',{name:name,quantity:quantity,price:price,desc:desc,seller:userName,img:data.hits[0].previewURL});
+        await socket.emit('addProduct',{name:name,quantity:quantity,price:price,desc:desc,seller:userName,img:data.hits[0].previewURL});
     }
     
     else{
@@ -25,7 +25,7 @@ desc=document.getElementById('inputDesc').value;
     });
     setTimeout(function(){
         window.location.reload();
-    },1000);
+    },1100);
     
 }
 })

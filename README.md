@@ -48,3 +48,5 @@ Know how much you spent on products through your purchase history.
 * Search bar for buyers to ease their eexperience . 
 * Stats for buyers and sellers on their expenditures and incomes. 
 * Buyers purchase history is also stored and can be viewed as a QR code. 
+* Smart Image generation for adding products .
+* If u wish to add your image u can also do that as well.
